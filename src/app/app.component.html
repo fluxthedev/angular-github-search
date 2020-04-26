@@ -1,47 +1,27 @@
 <div class="container" id="main">
   <div class="row">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">AngularTest</a>
-        <button
-          class="navbar-toggler hidden-lg-up"
-          type="button"
-          data-toggle="collapse"
-          data-target="#collapsibleNavId"
-          aria-controls="collapsibleNavId"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        ></button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-          <ul class="navbar-nav pl-4 mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-              <a class="nav-link" href="#"
-                >Home <span class="sr-only">(current)</span></a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
+      <a class="navbar-brand" href="#">AngularTest</a>
     </nav>
   </div>
 
   <div class="spacer"></div>
   <div class="container content">
     <div class="row">
+      <h2>Search GitHub Commits</h2>
       <form class="form-inline my-2 my-lg-0">
-        <label for="search">Search Github Commits</label>
         <input
           id="search"
           class="form-control mr-sm-2"
           type="text"
-          placeholder="Search"
+          placeholder="Search for Github Users"
         />
         <button
           (click)="getStuff()"
           type="button"
-          name=""
-          id=""
-          class="btn btn-primary btn-lg btn-block mx-4 mt-4 mb-3 py-3"
+          id="search"
+          class="mx-4 mt-4 mb-3 py-3"
+          mz-button
         >
           Search
         </button>
@@ -50,11 +30,16 @@
     <hr />
     <div class="row px-4">
       <div class="row">
-        <div *ngFor="let photo of result$ | async" class="col-md-4">
+        <div *ngFor="let item of array" class="col-md-4">
           <div class="card">
+            <img
+              class="card-img-top"
+              src="{{ item.avatar_url }}"
+              alt="Card image cap"
+            />
             <div class="card-body">
-              <h3 class="card-title">{{ photo.name }}</h3>
-              <p>{{ photo.description }}</p>
+              <h5 class="card-title">{{ item.login }}</h5>
+              <a href="{{ item.url }}" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
         </div>

@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { shareReplay } from 'rxjs/operators';
-import { HttpRequestService } from './http-request.service';
+import { HttpRequestService } from './services/http-request.service';
+import { GitResponse } from './interfaces/gitResponse';
 
 @Component({
   selector: 'app-root',
@@ -11,16 +12,15 @@ import { HttpRequestService } from './http-request.service';
 })
 export class AppComponent {
   search: string;
-  public result$: Observable<any>;
-
+  public array: any;
   constructor(private httpRequestService: HttpRequestService) {}
 
   getStuff() {
-    if (!this.result$) {
-      return (this.result$ = this.httpRequestService
-        .resolveProduct(this.search)
-        .pipe(shareReplay({ bufferSize: 1, refCount: true })));
-    }
-    return this.result$;
+    this.search = (<HTMLInputElement>document.getElementById('search')).value;
+    this.httpRequestService
+      .resolveProduct(this.search)
+      .subscribe(res => {
+        this.array = res["items"] as GitResponse[]
+      });
   }
 }
