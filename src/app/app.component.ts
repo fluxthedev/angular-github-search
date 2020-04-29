@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { shareReplay } from 'rxjs/operators';
+import { shareReplay, expand, take } from 'rxjs/operators';
 import { HttpRequestService } from './services/http-request.service';
 import { GitResponse } from './interfaces/gitResponse';
 
@@ -11,19 +11,33 @@ import { GitResponse } from './interfaces/gitResponse';
 export class AppComponent {
   search: string;
   public array: any;
+  combinedArray = [];
   constructor(private httpRequestService: HttpRequestService) {}
 
   getStuff() {
+    let i = 1;
     this.search = (<HTMLInputElement>(
       document.getElementById('search-input')
     )).value;
 
     if (!this.array) {
       this.httpRequestService
-        .resolveProduct(this.search)
-        .pipe(shareReplay(1))
+        .resolveProduct(this.search, i)
+        .pipe(
+          expand((val) => {
+            i++;
+            return this.httpRequestService.resolveProduct(this.search, i);
+          }),
+          take(2),
+          shareReplay(1)
+        )
         .subscribe((res) => {
-          this.array = res['items'] as GitResponse[];
+          let items = res['items'];
+          for (let x = 0; x <= items.length; x++) {
+            this.combinedArray.push(items[x]);
+          }
+          this.combinedArray.pop();
+          this.array = this.combinedArray as GitResponse[];
         });
     }
 

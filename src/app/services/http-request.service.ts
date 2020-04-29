@@ -9,7 +9,7 @@ import { GitResponse } from '../interfaces/gitResponse';
 export class HttpRequestService {
   constructor(private http: HttpClient) {}
 
-  resolveProduct(search: string): Observable<GitResponse[]> {
+  resolveProduct(search: string, i: number): Observable<GitResponse[]> {
     const headerDict = {
       Accept: 'application/vnd.github.cloak-preview',
     };
@@ -20,6 +20,9 @@ export class HttpRequestService {
 
     const URL = 'https://api.github.com/search/users?q=';
 
-    return this.http.get<GitResponse[]>(URL + search, requestOptions);
+    return this.http.get<GitResponse[]>(
+      URL + search + '&page=' + i + '&per_page=80',
+      requestOptions
+    );
   }
 }
