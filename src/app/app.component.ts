@@ -16,9 +16,9 @@ export class AppComponent {
 
   getStuff() {
     let i = 1;
-    this.search = (<HTMLInputElement>(
+    this.search = ((
       document.getElementById('search-input')
-    )).value;
+    ) as HTMLInputElement).value;
 
     if (!this.array) {
       this.httpRequestService
@@ -32,7 +32,7 @@ export class AppComponent {
           shareReplay(1)
         )
         .subscribe((res) => {
-          let items = res['items'];
+          const items = res.items;
           for (let x = 0; x <= items.length; x++) {
             this.combinedArray.push(items[x]);
           }
